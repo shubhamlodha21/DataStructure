@@ -12,7 +12,7 @@
 #include<stdlib.h>
 #include<stdbool.h>
 
-typedef struct node
+typedef struct node//Structure Defined
 {
     int data;
     struct node *lchild;
