@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////
-//Function Name:main/
+//Function Name:main//
 //Input:--
 //Output:--
 //Description:Create a Singly Linear Linked List in C to perform All functions.
