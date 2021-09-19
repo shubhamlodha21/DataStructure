@@ -7,9 +7,9 @@ We are running show now
 10
 20
 *Description:Implementation of Array as ADT (Abstract Data Type) using structure
-*Date:08-August-2021
-*Author:Shruti Nahar*/
-/////////////////////////////
+*Date:19-09-2021
+*Author:Shubham Lodha*/
+/////////////////////////
 #include<stdio.h>
 #include<stdlib.h>
 struct myArray
