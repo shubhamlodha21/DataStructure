@@ -8,7 +8,7 @@ We are running show now
 20
 *Description:Implementation of Array as ADT (Abstract Data Type) using structure
 *Date:19-09-2021
-*Author:Shubham Lodha*/
+*Author:Shubham Lodha
 /////////////////////////
 #include<stdio.h>
 #include<stdlib.h>
