@@ -11,8 +11,8 @@ Do you want to continue!!!!!  1
 Do you want to continue!!!!!  2
 -----------------THANKYOU----------------------
 *Description:Use of Malloc (Dynamic Memory Allocation )
-*Date: 6-July-2021
-*Author:Shruti Nahar*/
+*Date: 19-09-2021
+*Author:Shubham Lodha*/
 ////////////////////////////////////
 #include <iostream>
 #include<stdlib.h>
