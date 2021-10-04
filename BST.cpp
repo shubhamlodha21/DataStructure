@@ -1,269 +1,358 @@
-////////////////////////////////////////////////////////
-//Function Name:BST
-//Input:--
-//Output:--
-//Description: Implementation of Binary Search Tree
-//Date: 04/09/2021
-//Author: Shubham Lodha
-///////////////////////////////////////////////////////
-
-
+//Description : Binary Search Tree Generic
+//Date: 04/10/2021
+//Author: Shubham LOdha
 
 #include<iostream>
+#include<stdbool.h>
 using namespace std;
 
-typedef struct node
+template <class T>
+struct node
 {
-    int data;
-    struct node *lchild;
-    struct node *rchild;
-}NODE,*PNODE,**PPNODE;
-
-class BST
-{
-    private:
-    PNODE Head;
-    int iSize;
-
-    public:
-    BST();
-    void InsertNode(PPNODE,int);
-    void Inorder(PNODE);
-    void PreOrder(PNODE);
-    void PostOrder(PNODE);
-    int Count();
-    void CountParent(PNODE,int *);
-    void CountLeaf(PNODE,int *);
-    bool SearchNode(PNODE,int);
+	T data;
+	struct node *lchild;
+	struct node *rchild;
 };
 
-
-BST::BST()//Constructor
+template <class T>
+class BST
 {
-    Head=NULL;
-    iSize=0;
-}
-
-void BST::InsertNode(PPNODE root,int iNo)
-{
-    PNODE temp=Head;
-    PNODE newn=NULL;
-    newn=new NODE;
-    newn->data=iNo;
-    newn->lchild=NULL;
-    newn->rchild=NULL;
-
-    if(Head==NULL)//If EMpty node contains 
+  private:
+  	struct node<T> *Head;
+  	int iSize;
+  public:
+    
+    BST()
     {
-        Head=newn;
-        *root=Head;
-        iSize++;
+    	Head=NULL;
+    	iSize=0;
     }
-    else
-    {
-        while(1)
-        {
-            if(iNo > temp->data)//if Data is less than current root
-            {
-                if(temp->rchild==NULL)
-                {
-                temp->rchild=newn;
-                iSize++;
-                break;
-                }
-                temp=temp->rchild;
-            }
-            else if(iNo < temp->data)//if Data is greater than current root
-            {
-                if(temp->lchild==NULL)
-                {
-                    temp->lchild=newn;
-                    iSize++;
-                    break;
-                }
-                temp=temp->lchild;
-            }
-            else //if Data is already  
-            {
-                cout<<"Duplicate Data Not Allowed..!";
-                delete newn;
-                break;
-            }
 
-        }      
-    }
+    void InsertNode(struct node<T> **,T);
+    void Inorder(struct node<T> *);
+    void Preorder(struct node<T> *);
+    void Postorder(struct node<T> *);
+    void Count(struct node<T> *,int *);
+    void CountParents(struct node<T> *,int *);
+    void CountLeaf(struct node<T> *,int *);
+    bool SearchRecursion(struct node<T> *,T);
+    bool SearchNormal(T);
+    int NormalCount();	
+};
+
+template <class T>
+void BST<T>::InsertNode(struct node<T> **Root,T iNo)
+{
+	struct node<T> *temp = Head;
+	struct node<T> *newn = NULL;
+	newn = new struct node<T>;
+	newn->data = iNo;
+	newn->lchild = NULL;
+	newn->rchild = NULL;
+
+	if(Head == NULL)
+	{
+		
+		Head = newn;
+	    *Root = Head;
+		iSize++;
+		
+	}
+	else
+	{
+		while(1)
+		{
+			if(iNo > temp->data)
+			{
+				if(temp->rchild == NULL)
+				{
+					temp->rchild = newn;
+					iSize++;
+					break;
+				}
+				temp = temp->rchild;
+			}
+			else if(iNo < temp->data)
+			{
+				if(temp->lchild == NULL)
+				{
+					temp->lchild = newn;
+					iSize++;
+					break;
+				}
+				temp = temp->lchild;
+			}
+			else if(iNo == temp->data)
+			{
+				cout<<"Duplicate elements\n";
+				delete newn;
+				break;
+			}
+		}
+	}
 }
 
-void BST::Inorder(PNODE temp)
+template <class T>
+void BST<T>::Inorder(struct node<T> *Head1)
 {
-    if(temp!=NULL)
-    {
-        Inorder(temp->lchild);    // L
-        cout<<temp->data<<"\t";  // D
-        Inorder(temp->rchild);  // R
-    }
+	
+	if(Head1!=NULL)
+	{
+		
+        Inorder(Head1->lchild);
+        cout<<Head1->data<<"\t";
+        Inorder(Head1->rchild);
+	}
 }
 
-void BST::PreOrder(PNODE temp)
+template <class T>
+void BST<T>::Preorder(struct node<T> *Head1)
 {
-    if(temp!=NULL)
+    if(Head1!=NULL)
     {
-        cout<<temp->data<<"\t";//D
-        PreOrder(temp->lchild);//L
-        PreOrder(temp->rchild);//R
-    }
-}
-
-void BST::PostOrder(PNODE temp)
-{
-    if(temp!=NULL)
-    {
-        PostOrder(temp->lchild);//L
-        PostOrder(temp->rchild);//R
-        cout<<temp->data<<"\t";//D
-    }
-}
-
-int BST::Count()
-{
-    return iSize;
-}
-
-void BST::CountLeaf(PNODE temp,int *i)
-{
-    if(temp!=NULL)
-    {
-        if((temp->lchild==NULL)&&(temp->rchild==NULL))
-        {
-            (*i)++;
-        }
-        CountLeaf(temp->lchild,i);
-        CountLeaf(temp->rchild,i);
+    	cout<<Head1->data<<"\t";
+    	Preorder(Head1->lchild);
+    	Preorder(Head1->rchild);
     }
 }
 
-void BST::CountParent(PNODE temp,int *i)
+template <class T>
+void BST<T>::Postorder(struct node<T> *Head1)
 {
-    if(temp!=NULL)
+	 if(Head1!=NULL)
     {
-        if((temp->lchild!=NULL)||(temp->rchild!=NULL))
-        {
-            (*i)++;
-        }
-        CountLeaf(temp->lchild,i);
-        CountLeaf(temp->rchild,i);
+    	
+    	Postorder(Head1->lchild);
+    	Postorder(Head1->rchild);
+    	cout<<Head1->data<<"\t";
     }
 }
 
-bool BST::SearchNode(PNODE temp,int iNo)
+template <class T>
+void BST<T>::Count(struct node<T> *Head1,int *i)
 {
-    if(temp)
+    if(Head1!=NULL)
     {
-        if(iNo > temp->data)
-        {
-            return SearchNode(temp->rchild,iNo);
-        }
-        else if(iNo < temp->data)
-        {
-            return SearchNode(temp->lchild,iNo);
-        }
-        else if(iNo== temp->data)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+    	(*i)++;
+    	Count(Head1->lchild,i);
+    	Count(Head1->rchild,i);
     }
 }
 
+template <class T>
+void BST<T>::CountLeaf(struct node<T> *Head1,int *i)
+{
+	if(Head1!=NULL)
+	{
+		if((Head1->lchild==NULL)&&(Head1->rchild==NULL))
+		{
+			(*i)++;
+		}
+		CountLeaf(Head1->lchild,i);
+		CountLeaf(Head1->rchild,i);
+	}
+}
+
+
+template <class T>
+void BST<T>::CountParents(struct node<T> *Head1,int *i)
+{
+	if(Head1!=NULL)
+	{
+		if((Head1->lchild!=NULL)||(Head1->rchild!=NULL))
+		{
+			(*i)++;
+		}
+		CountParents(Head1->lchild,i);
+		CountParents(Head1->rchild,i);
+	}
+}
+
+template <class T>
+bool BST<T>::SearchRecursion(struct node<T> *Head1,T iNo)
+{
+	if(Head1!=NULL)
+	{
+		if(iNo > Head1->data)
+		{
+			return SearchRecursion(Head1->rchild,iNo);
+		}
+		else if(iNo < Head1->data)
+		{
+			return SearchRecursion(Head1->lchild,iNo);
+		}
+		else if(iNo==Head1->data)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
+template <class T>
+bool BST<T>::SearchNormal(T iNo)
+{
+   struct node<T> *temp = Head;
+
+   if(temp==NULL)
+   {
+   	return false;
+   }
+   else
+   {
+   	 while(1)
+   	 {
+   	 	 if(iNo > temp->data)
+   	 	 {
+   	 	 	 if(temp->rchild==NULL)
+   	 	 	 {
+   	 	 	 	break;
+   	 	 	 }
+   	 	 	 temp = temp->rchild;
+   	 	 }
+   	 	 else if(iNo < temp->data)
+   	 	 {
+   	 	 	 if(temp->lchild==NULL)
+   	 	 	 {
+   	 	 	 	break;
+   	 	 	 }
+   	 	 	 temp = temp->lchild;
+   	 	 }
+   	 	 else if(iNo==temp->data)
+   	 	 {
+   	 	 	break;
+   	 	 }
+   	 }
+   }
+
+   if(iNo==temp->data)
+   {
+   	 return true;
+   }
+   else
+   {
+   	 return false;
+   }
+}
+
+template <class T>
+int BST<T>::NormalCount()
+{
+	return iSize;
+}
 
 
 int main()
 {
-    int iNo=0,iRet=0,iChoice=1,i=0;
-    bool bRet=false;
-    PNODE root=NULL;
-    BST obj;
+	int iChoice = 1,iRet = 0,i = 0;
+    BST<double> obj;
+    struct node<double> *Root = NULL;
+    double iNo;
 
-    while(iChoice!=0)
-    {
-    printf("\n_______________________________\n");
-    cout<<"Enter Your Choice:"<<"\n";
-    cout<<"1.Insert Node"<<"\n";
-    cout<<"2.Display Inorder"<<"\n";
-    cout<<"3.Display Preorder"<<"\n";
-    cout<<"4.Display Postorder"<<"\n";
-    cout<<"5.Count Total Nodes"<<"\n";
-    cout<<"6.Count Parent Nodes"<<"\n";
-    cout<<"7.Count Leaf Nodes"<<"\n";
-    cout<<"8.Search Node"<<"\n";
-    cout<<"0.Exit the Application"<<"\n";
-    printf("\n____________________________________\n");
-    cin>>iChoice;
+	while(iChoice!=0)
+	{
+		cout<<"\n";
+		cout<<"Enter your choice\n";
+		cout<<"1  : InsertNode\n";
+		cout<<"2  : Inorder\n";
+		cout<<"3  : Preorder\n";
+		cout<<"4  : Postorder\n";
+		cout<<"5  : Count\n";
+		cout<<"6  : NormalCount\n";
+		cout<<"7  : CountParents\n";
+		cout<<"8  : CountLeaf\n";
+		cout<<"9  : Search using Recursion\n";
+		cout<<"10 : Normal Search\n";
+        cout<<"0  : Exit\n";
+		cin>>iChoice;
 
-    switch(iChoice)
-    {
-        case 1:
-        cout<<"Enter Node You Want Add:"<<"\n";
-        cin>>iNo;
-        obj.InsertNode(&root,iNo);
-        break;
+		switch(iChoice)
+		{
+			case 1:
+			cout<<"Enter the number\n";
+			cin>>iNo;
+			obj.InsertNode(&Root,iNo);
+			break;
 
-        case 2:
-        cout<<"Nodes in Inorder sequence are:"<<"\n";
-        obj.Inorder(root);
-        break;
+			case 2:
+			cout<<"Inorder traversal\n";
+			obj.Inorder(Root);
+			break;
 
-        case 3:
-        cout<<"Nodes in Preorder Sequence are:"<<"\n";
-        obj.PreOrder(root);
-        break;
+			case 3:
+			cout<<"Preorder traversal\n";
+			obj.Preorder(Root);
+			break;
 
-        case 4:
-        cout<<"Nodes in Postorder Sequence are:"<<"\n";
-        obj.PostOrder(root);
-        break;
+			case 4:
+			cout<<"Postorder traversal\n";
+			obj.Postorder(Root);
+			break;
 
-        case 5:
-        iRet=obj.Count();
-        cout<<"Total Number of Nodes are:"<<iRet;
-        break;
+			case 5:
+			i = 0;
+			obj.Count(Root,&i);
+			cout<<"Numbers of nodes are "<<i<<"\n";
+			break;
 
-        case 6:
-        i=0;
-        obj.CountParent(root,&i);
-        cout<<"Total Number of Parent Nodes are:"<<i;
-        break;
+			case 6:
+			iRet = obj.NormalCount();
+			cout<<"Numbers of nodes are "<<iRet<<"\n";
+			break;
 
-        case 7:
-        i=0;
-        obj.CountLeaf(root,&i);
-        cout<<"Total Number of Leaf Nodes are:"<<i;
-        break;
+            case 7:
+            i = 0;
+            obj.CountParents(Root,&i);
+            cout<<"Numbers of Parents nodes are "<<i<<"\n";
+			break;
 
-        case 8:
-        cout<<"Enter Node You Want Search:";
-        cin>>iNo;
-        bRet=obj.SearchNode(root,iNo);
-        if(bRet==true)
-        {
-            cout<<iNo<<"Node is Present";
-        }
-        else
-        {
-            cout<<iNo<<"Node is not Present";
-        }
-        break;
+			case 8:
+            i = 0;
+            obj.CountLeaf(Root,&i);
+            cout<<"Numbers of Leaf nodes are "<<i<<"\n";
+			break;
 
-        case 0:
-        cout<<"Thanks for using Binary Search Tree(BST) Application"<<"\n";
-        break;
+			case 9:
+			cout<<"Enter the number to search\n";
+			cin>>iNo;
+			iRet=obj.SearchRecursion(Root,iNo);
+			if(iRet==true)
+			{
+				cout<<iNo<<" is Present in BST\n";
+			}
+			else
+			{
+				cout<<iNo<<" is Not Present in BST\n";
+			}
+			break;
 
-        default:
-        cout<<"Please Select Correct option..!";
-        break;
-        }
-    }
+            case 10:
+            cout<<"Enter the number to search\n";
+			cin>>iNo;
+			iRet=obj.SearchNormal(iNo);
+			if(iRet==true)
+			{
+				cout<<iNo<<" is Present in BST\n";
+			}
+			else
+			{
+				cout<<iNo<<" is Not Present in BST\n";
+			}
+			break;
+
+			case 0:
+			cout<<"Thanks for using the application\n";
+			break;
+
+			default:
+			cout<<"Wrong input\n";
+			break;
+
+		}
+	}
+	return 0;
 }
+
