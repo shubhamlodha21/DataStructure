@@ -1,4 +1,4 @@
-//Queue Linked-List(FIFO)
+//Queue Linked-List(FIFO )
 
 #include<iostream>
 using namespace std;
