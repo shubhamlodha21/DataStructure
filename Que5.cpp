@@ -1,8 +1,8 @@
 /*input:- s[]={"geeks","for","skeeg"}
 output:- geeks
 description:The task is to check the reverse of the particular word is present that array itself of or not
-date: 30-09-2021
-Author name: Shruti Nahar*/
+date: 07-10-2021
+Author name: Shubham Lodha*/
 #include<iostream>
 using namespace std;
 bool reversestr(string s1,string s2)
