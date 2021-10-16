@@ -1,8 +1,8 @@
 /*input:- arr[10]={8,5,1,3,4,2,6,7,9,10};
 output:- After Merge sort 1 2 3 4 5 6 7 8 9 10 
 description: Implementation of Merge Sort
-date: 01-10-2021
-Author name: Shruti Nahar*/
+date: 16-10-2021
+Author name: Shubham Lodha*/
 #include<iostream>
 using namespace std;
 void mergearr(int arr[],int l,int mid,int r)
