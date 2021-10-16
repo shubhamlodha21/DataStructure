@@ -1,8 +1,8 @@
 /*input:-arr[]={10,16,4,3,9}
 output:- After Quick sort 3 4 9 10 16 
 description: Implementation of Quick Sort
-date: 01-10-2021
-Author name: Shruti Nahar*/
+date: 16-10-2021
+Author name: Shubham Lodha*/
 #include <iostream>
 using namespace std;
 void swap(int arr[],int i,int j)
